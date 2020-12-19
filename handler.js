@@ -64,12 +64,13 @@ module.exports.getAllPost = (event, context, callback) => {
 
 module.exports.getPosts = (event, context, callback)=> {
     const numberOfPosts = event.pathParameters.number;
-    console.log(numberOfPosts);
+    console.log(event);
+    // console.log(numberOfPosts);
     const params = {
         TableName: postTable,
         Limit: numberOfPosts
     };
-    return dynamoDB.get(params).promise()
+    return dynamoDB.scan(params).promise()
         .then(res => {
             callback(null, response(200, res.Items.sort(sortByDate)))
         }).catch(err => {
